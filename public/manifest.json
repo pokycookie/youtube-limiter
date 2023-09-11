@@ -3,6 +3,7 @@
   "description": "Limit youtube usage time",
   "manifest_version": 3,
   "version": "1.0.0",
+  "permissions": ["tabs", "storage"],
   "action": {
     "default_popup": "popup.html"
   },
@@ -11,7 +12,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": ["https://www.youtube.com/*"],
       "js": ["content.js"]
     }
   ]
