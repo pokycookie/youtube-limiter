@@ -15,4 +15,10 @@ export async function setTotal(now: number) {
   console.group('total')
   console.log((total + (now - oldest)) / 1000 + ' sec')
   console.groupEnd()
+
+  return total + (now - oldest)
+}
+
+export async function getTotal() {
+  return await chrome.storage.local.get('total').then((res) => res.total)
 }
