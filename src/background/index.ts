@@ -2,7 +2,7 @@ import { checkTabs, setTotal } from './utils'
 
 chrome.runtime.onInstalled.addListener(async () => {
   await chrome.storage.local.set({ total: 0, oldest: null })
-  await chrome.storage.sync.set({ maxTime: 60 * 60 * 2 })
+  await chrome.storage.sync.set({ maxTime: 60 * 60 * 2 * 1000 })
 })
 
 chrome.tabs.onUpdated.addListener(async (id, info, tab) => {
@@ -41,10 +41,9 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
       // IIFE 패턴을 사용해야만 async처리된 데이터를 넘겨줄 수 있음
       ;(async () => {
         await setTotal(now)
-        const total = await chrome.storage.local
-          .get('total')
-          .then((res) => res.total)
-        res({ total })
+        const local = await chrome.storage.local.get(['total'])
+        const sync = await chrome.storage.sync.get(['maxTime'])
+        res({ total: local.total, maxTime: sync.maxTime })
       })()
       break
     default:
