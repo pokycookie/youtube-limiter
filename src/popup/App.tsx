@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRotateLeft, faGear } from '@fortawesome/free-solid-svg-icons'
 import { faYoutube } from '@fortawesome/free-brands-svg-icons'
 
-const App = () => {
+function App() {
   const [total, setTotal] = useState(0)
   const [maxValue, setMaxValue] = useState(0)
 
@@ -32,7 +32,16 @@ const App = () => {
           <FontAwesomeIcon icon={faYoutube} className="text-red-600 w-4 h-4" />
           Youtube Limiter
         </h1>
-        <button className="flex justify-center items-center text-zinc-300 hover:text-zinc-100">
+        <button
+          className="flex justify-center items-center text-zinc-300 hover:text-zinc-100"
+          onClick={() => {
+            if (chrome.runtime.openOptionsPage) {
+              chrome.runtime.openOptionsPage()
+            } else {
+              window.open(chrome.runtime.getURL('options.html'))
+            }
+          }}
+        >
           <FontAwesomeIcon icon={faGear} className="w-3 h-3" />
         </button>
       </header>
