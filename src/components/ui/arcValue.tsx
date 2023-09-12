@@ -26,15 +26,16 @@ export default function ArcValue(props: IProps) {
         startDeg={props.startDeg}
         endDeg={props.endDeg}
         holeSize={85}
-        color={props.bgColor ?? '#bfdbfe'}
+        color={props.bgColor ?? '#71717a'}
         reverse={props.reverse}
       />
       <Arc
         startDeg={props.startDeg}
         endDeg={value}
         holeSize={85}
-        color={props.color ?? '#3b82f6'}
+        color={props.color ?? '#dc2626'}
         reverse={props.reverse}
+        strokeWidth={1}
       />
     </svg>
   )

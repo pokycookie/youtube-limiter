@@ -44,7 +44,7 @@ export default function Arc(props: IProps) {
     <path
       d={`M ${start.x} ${start.y} A ${outer} ${outer} 0 ${largeArcFlag} ${sweepFlag1} ${end.x} ${end.y} L ${innerEnd.x} ${innerEnd.y} A ${inner} ${inner} 0 ${largeArcFlag} ${sweepFlag2} ${innerStart.x} ${innerStart.y} Z
               `}
-      stroke="#2c3333"
+      stroke="#71717a"
       strokeWidth={strokeWidth}
       fill={props.color ?? 'black'}
       onMouseEnter={props.onMouseEnter}
