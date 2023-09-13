@@ -9,7 +9,6 @@ function useReact() {
 }
 
 function useLimiter() {
-  console.log('clear')
   while (document.body.firstChild) {
     document.body.removeChild(document.body.firstChild)
   }
@@ -24,7 +23,7 @@ const check = () => {
     chrome.runtime.sendMessage({ key: 'check' }, (res) => {
       if (res.result) {
         useLimiter()
-        console.log('stop!!')
+        banned = true
       }
     })
   } catch (error) {
@@ -32,7 +31,9 @@ const check = () => {
   }
 }
 
-setInterval(() => {
+let banned = false
+const interval = setInterval(() => {
   check()
+  if (banned) clearInterval(interval)
 }, 10000)
 check()

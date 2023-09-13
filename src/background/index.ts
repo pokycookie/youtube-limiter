@@ -1,7 +1,11 @@
 import { checkTabs, setTotal } from './utils'
 
 chrome.runtime.onInstalled.addListener(async () => {
-  await chrome.storage.local.set({ total: 0, oldest: null })
+  await chrome.storage.local.set({
+    total: 0,
+    oldest: null,
+    maxTime: 60 * 60 * 2 * 1000,
+  })
   await chrome.storage.sync.set({ maxTime: 60 * 60 * 2 * 1000 })
 })
 
@@ -36,15 +40,19 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
       // IIFE 패턴을 사용해야만 async처리된 데이터를 넘겨줄 수 있음
       ;(async () => {
         await setTotal(now)
-        const local = await chrome.storage.local.get('total')
-        const sync = await chrome.storage.sync.get('maxTime')
-        res({ total: local.total, maxTime: sync.maxTime })
+        const { total, maxTime } = await chrome.storage.local.get([
+          'total',
+          'maxTime',
+        ])
+        // const sync = await chrome.storage.sync.get('maxTime')
+        res({ total, maxTime })
       })()
       break
     case 'setMaxTime':
       if (!req.payload?.maxTime) res({ status: 400 })
       ;(async () => {
         await chrome.storage.sync.set({ maxTime: req.payload.maxTime })
+        await chrome.storage.local.set({ maxTime: req.payload.maxTime })
         await setTotal(now)
         res({ status: 200 })
       })()
@@ -52,9 +60,10 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
     case 'check':
       ;(async () => {
         await setTotal(now)
-        const { total } = await chrome.storage.local.get('total')
-        const { maxTime } = await chrome.storage.sync.get('maxTime')
-        console.log(total > maxTime)
+        const { total, maxTime } = await chrome.storage.local.get([
+          'total',
+          'maxTime',
+        ])
         res({ result: total > maxTime })
       })()
       break
