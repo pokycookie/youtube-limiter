@@ -7,6 +7,7 @@ import { faYoutube } from '@fortawesome/free-brands-svg-icons'
 function App() {
   const [total, setTotal] = useState(0)
   const [maxValue, setMaxValue] = useState(0)
+  const [refreshClicked, setRefreshClicked] = useState(false)
 
   const getTotal = () => {
     try {
@@ -66,8 +67,11 @@ function App() {
           </span>
         </div>
         <button
-          className="absolute flex justify-center items-center rounded-full w-9 aspect-square bottom-3 bg-zinc-600 hover:bg-red-600 hover:text-white text-zinc-300 hover:-rotate-45 transition-all"
+          className="absolute flex justify-center data-[clicked=true]:scale-90 items-center rounded-full w-9 aspect-square bottom-3 bg-zinc-600 hover:bg-red-600 hover:text-white text-zinc-300 hover:-rotate-45 transition-all"
+          data-clicked={refreshClicked}
           onClick={() => getTotal()}
+          onMouseDown={() => setRefreshClicked(true)}
+          onMouseUp={() => setRefreshClicked(false)}
         >
           <FontAwesomeIcon className="w-4 h-4" icon={faRotateLeft} />
         </button>
