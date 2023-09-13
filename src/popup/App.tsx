@@ -13,6 +13,7 @@ function App() {
     try {
       chrome.runtime.sendMessage({ key: 'getTotal' }, (res) => {
         if (res) {
+          console.log(res)
           if (typeof res.total === 'number') setTotal(res.total)
           if (typeof res.maxTime === 'number') setMaxValue(res.maxTime)
         } else console.error('Invalid response from background script')
@@ -20,6 +21,10 @@ function App() {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  const refreshHandler = () => {
+    getTotal()
   }
 
   useEffect(() => {
@@ -69,7 +74,7 @@ function App() {
         <button
           className="absolute flex justify-center data-[clicked=true]:scale-90 items-center rounded-full w-9 aspect-square bottom-3 bg-zinc-600 hover:bg-red-600 hover:text-white text-zinc-300 hover:-rotate-45 transition-all"
           data-clicked={refreshClicked}
-          onClick={() => getTotal()}
+          onClick={refreshHandler}
           onMouseDown={() => setRefreshClicked(true)}
           onMouseUp={() => setRefreshClicked(false)}
         >

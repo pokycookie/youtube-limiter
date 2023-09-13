@@ -41,6 +41,14 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
         res({ total: local.total, maxTime: sync.maxTime })
       })()
       break
+    case 'setMaxTime':
+      if (!req.payload?.maxTime) res({ status: 400 })
+      ;(async () => {
+        await chrome.storage.sync.set({ maxTime: req.payload.maxTime })
+        await setTotal(now)
+        res({ status: 200 })
+      })()
+      break
     default:
       console.error('Invalid message key')
       break
