@@ -67,6 +67,13 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
         res({ result: total > maxTime })
       })()
       break
+    case 'reset':
+      ;(async () => {
+        await chrome.storage.local.set({ total: 0 })
+        await setTotal(now)
+        res({})
+      })()
+      break
     default:
       console.error('Invalid message key')
       break

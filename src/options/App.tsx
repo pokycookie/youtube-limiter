@@ -38,24 +38,32 @@ function App() {
     }
   }
 
+  const resetHandler = () => {
+    try {
+      chrome.runtime.sendMessage({ key: 'reset' })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     getDefaultMaxTime()
   }, [])
 
   return (
-    <div className="w-full h-screen bg-zinc-800 flex justify-center items-center p-10">
+    <div className="flex items-center justify-center w-full h-screen p-10 bg-zinc-800">
       <div className="rounded-md bg-zinc-700 w-[512px] shadow-md overflow-hidden border border-zinc-500 divide-y divide-zinc-500">
-        <header className="w-full bg-zinc-900 p-2 flex items-center justify-between">
-          <h1 className="text-xs font-semibold text-red-600 flex gap-2 items-center h-7">
+        <header className="flex items-center justify-between w-full p-2 bg-zinc-900">
+          <h1 className="flex items-center gap-2 text-xs font-semibold text-red-600 h-7">
             <FontAwesomeIcon
               icon={faYoutube}
-              className="text-red-600 w-4 h-4"
+              className="w-4 h-4 text-red-600"
             />
             Youtube Limiter Options
           </h1>
         </header>
-        <ul className="text-sm text-zinc-300 divide-y divide-zinc-500">
-          <li className="w-full p-3 h-14 flex justify-between items-center gap-5">
+        <ul className="text-sm divide-y text-zinc-300 divide-zinc-500">
+          <li className="flex items-center justify-between w-full gap-5 p-3 h-14">
             <h2 className="shrink-0">최대시청시간 설정</h2>
             <div className="shrink-0">
               <TimeInput
@@ -65,14 +73,17 @@ function App() {
               />
             </div>
           </li>
-          <li className="w-full p-3 h-14 flex justify-between items-center gap-5">
+          <li className="flex items-center justify-between w-full gap-5 p-3 h-14">
             <h2 className="shrink-0">사용시간 초기화</h2>
-            <button className="shrink-0 p-2 pl-3 pr-3 text-sm text-gray-400 border rounded-md border-zinc-600 bg-zinc-900 hover:border-red-500 hover:text-white hover:bg-red-600">
+            <button
+              onClick={resetHandler}
+              className="p-2 pl-3 pr-3 text-sm text-gray-400 border rounded-md shrink-0 border-zinc-600 bg-zinc-900 hover:border-red-500 hover:text-white hover:bg-red-600"
+            >
               초기화
             </button>
           </li>
         </ul>
-        <div className="w-full bg-zinc-900 p-3 flex justify-end items-center">
+        <div className="flex items-center justify-end w-full p-3 bg-zinc-900">
           <button
             className="p-2 pl-3 pr-3 text-sm text-gray-400 border rounded-md border-zinc-600 bg-zinc-900 hover:border-red-500 hover:text-white hover:bg-red-600"
             onClick={applyHandler}

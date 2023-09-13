@@ -46,18 +46,6 @@ function Banned() {
             />
             Youtube Limiter
           </h1>
-          <button
-            className="flex items-center justify-center text-zinc-300 hover:text-zinc-100"
-            onClick={() => {
-              if (chrome.runtime.openOptionsPage) {
-                chrome.runtime.openOptionsPage()
-              } else {
-                window.open(chrome.runtime.getURL('options.html'))
-              }
-            }}
-          >
-            <FontAwesomeIcon icon={faGear} className="w-3 h-3" />
-          </button>
         </header>
         <div className="flex flex-col items-center justify-center p-5">
           <div className="relative flex flex-col items-center justify-center w-64 h-64 p-5 mb-5">
