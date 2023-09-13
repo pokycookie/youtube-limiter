@@ -29,20 +29,8 @@ function App() {
       chrome.runtime.sendMessage(
         { key: 'setMaxTime', payload: { maxTime } },
         (res) => {
-          if (!res) console.error('Invalid response from background script')
-          else {
-            switch (res.status) {
-              case 200:
-                console.log('success to change maxTime')
-                break
-              case 400:
-                console.error('payload error')
-                break
-              default:
-                console.error('Invalid response from background script')
-                break
-            }
-          }
+          if (res.status === 200) console.log('success to change maxTime')
+          else console.error('Invalid response from background script')
         }
       )
     } catch (error) {

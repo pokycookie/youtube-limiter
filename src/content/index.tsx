@@ -19,4 +19,20 @@ function useLimiter() {
   useReact()
 }
 
-// document.body.onload = () => useLimiter()
+const check = () => {
+  try {
+    chrome.runtime.sendMessage({ key: 'check' }, (res) => {
+      if (res.result) {
+        useLimiter()
+        console.log('stop!!')
+      }
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+setInterval(() => {
+  check()
+}, 10000)
+check()
