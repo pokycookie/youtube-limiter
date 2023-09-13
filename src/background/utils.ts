@@ -3,18 +3,17 @@ export function checkTabs(tabs: chrome.tabs.Tab[]) {
 }
 
 export async function setTotal(now: number) {
-  const oldest = await chrome.storage.local
-    .get('oldest')
-    .then((res) => res.oldest)
-  if (!oldest) return
+  let { oldest } = await chrome.storage.local.get('oldest')
+  let { total } = await chrome.storage.local.get('total')
 
-  const total = await chrome.storage.local.get('total').then((res) => res.total)
+  if (!oldest) return
+  if (new Date(oldest).getDate() !== new Date(now).getDate()) {
+    oldest = new Date(new Date(now).setHours(0, 0, 0, 0))
+    total = 0
+  }
+
   await chrome.storage.local.set({ total: total + (now - oldest) })
   await chrome.storage.local.set({ oldest: now })
-
-  console.group('total')
-  console.log((total + (now - oldest)) / 1000 + ' sec')
-  console.groupEnd()
 
   return total + (now - oldest)
 }

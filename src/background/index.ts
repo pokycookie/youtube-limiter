@@ -11,9 +11,7 @@ chrome.tabs.onUpdated.addListener(async (id, info, tab) => {
 
   const now = new Date().getTime()
 
-  let oldest = await chrome.storage.local
-    .get('oldest')
-    .then((res) => res.oldest)
+  let { oldest } = await chrome.storage.local.get('oldest')
   if (!oldest) await chrome.storage.local.set({ oldest: now })
   await setTotal(now)
 })
@@ -23,10 +21,7 @@ chrome.tabs.onRemoved.addListener(async (id, info) => {
 
   const now = new Date().getTime()
 
-  const oldest = await chrome.storage.local
-    .get('oldest')
-    .then((res) => res.oldest)
-
+  const { oldest } = await chrome.storage.local.get('oldest')
   if (!oldest) return
 
   await setTotal(now)
@@ -41,8 +36,8 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
       // IIFE 패턴을 사용해야만 async처리된 데이터를 넘겨줄 수 있음
       ;(async () => {
         await setTotal(now)
-        const local = await chrome.storage.local.get(['total'])
-        const sync = await chrome.storage.sync.get(['maxTime'])
+        const local = await chrome.storage.local.get('total')
+        const sync = await chrome.storage.sync.get('maxTime')
         res({ total: local.total, maxTime: sync.maxTime })
       })()
       break
